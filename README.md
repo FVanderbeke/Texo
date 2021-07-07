@@ -11,5 +11,5 @@ Tool to display enterprise architecture models. First step : displaying model fr
 - FluentAssertions
 
 # Development tools
-- Jetbrain Riders
+- Jetbrain Rider
 
