@@ -12,4 +12,5 @@ Tool to display enterprise architecture models. First step : displaying model fr
 
 # Development tools
 - Jetbrain Rider
+- SQLite (for unit tests)
 
