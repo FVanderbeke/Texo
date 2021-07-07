@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31402.337
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Texo.Domain", "Texo.Domain\Texo.Domain.csproj", "{F38EAB2B-4F20-42F7-BD37-BFDE028E2A25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Texo.Domain.Tests", "Texo.Domain.Tests\Texo.Domain.Tests.csproj", "{AC858D99-ECDE-4066-8B77-39ADE9DA576A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Texo.Infrastructure.Db", "Texo.Infrastructure.Db\Texo.Infrastructure.Db.csproj", "{63C42265-05F2-4952-BAD6-2BB30D42CF2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Texo.UI", "Texo.UI\Texo.UI.csproj", "{94149796-D94A-4BFD-A8A6-26C651E22DC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Texo.Infrastructure.InMemory", "Texo.Infrastructure.InMemory\Texo.Infrastructure.InMemory.csproj", "{D02C70C2-CB1F-4C7C-BE04-0E08BA9BE489}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Texo.Infrastructure.Db.Tests", "Texo.Infrastructure.Db.Tests\Texo.Infrastructure.Db.Tests.csproj", "{381E9DDE-A192-463A-AA21-2FCF1F214C74}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F38EAB2B-4F20-42F7-BD37-BFDE028E2A25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F38EAB2B-4F20-42F7-BD37-BFDE028E2A25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F38EAB2B-4F20-42F7-BD37-BFDE028E2A25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F38EAB2B-4F20-42F7-BD37-BFDE028E2A25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC858D99-ECDE-4066-8B77-39ADE9DA576A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC858D99-ECDE-4066-8B77-39ADE9DA576A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC858D99-ECDE-4066-8B77-39ADE9DA576A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC858D99-ECDE-4066-8B77-39ADE9DA576A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63C42265-05F2-4952-BAD6-2BB30D42CF2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63C42265-05F2-4952-BAD6-2BB30D42CF2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63C42265-05F2-4952-BAD6-2BB30D42CF2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63C42265-05F2-4952-BAD6-2BB30D42CF2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94149796-D94A-4BFD-A8A6-26C651E22DC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94149796-D94A-4BFD-A8A6-26C651E22DC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94149796-D94A-4BFD-A8A6-26C651E22DC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94149796-D94A-4BFD-A8A6-26C651E22DC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D02C70C2-CB1F-4C7C-BE04-0E08BA9BE489}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D02C70C2-CB1F-4C7C-BE04-0E08BA9BE489}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D02C70C2-CB1F-4C7C-BE04-0E08BA9BE489}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D02C70C2-CB1F-4C7C-BE04-0E08BA9BE489}.Release|Any CPU.Build.0 = Release|Any CPU
+		{381E9DDE-A192-463A-AA21-2FCF1F214C74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{381E9DDE-A192-463A-AA21-2FCF1F214C74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{381E9DDE-A192-463A-AA21-2FCF1F214C74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{381E9DDE-A192-463A-AA21-2FCF1F214C74}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {227FCCFD-5D41-41D5-8B09-A0D4A12E3DAA}
+	EndGlobalSection
+EndGlobal
