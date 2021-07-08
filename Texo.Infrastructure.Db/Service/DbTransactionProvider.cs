@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Transactions;
 using Microsoft.EntityFrameworkCore.Storage;
+using Serilog.Core;
 using Texo.Domain.Api.Provider;
 using Texo.Infrastructure.Db.Internal;
 
@@ -10,13 +11,16 @@ namespace Texo.Infrastructure.Db.Service
     public class DbTransactionProvider : ITransactionProvider
     {
         private const string EfCoreContextKey = "EF_CORE_CONTEXT";
+        
         private readonly DbContext _dbContext;
+        private readonly Logger _logger;
         private readonly ThreadLocal<uint> _reentrantCount = new(() => 0);
         private readonly ThreadLocal<IDbContextTransaction> _currentTransaction = new ThreadLocal<IDbContextTransaction>();
         
-        public DbTransactionProvider(DbContext dbContext)
+        public DbTransactionProvider(DbContext dbContext, Logger logger)
         {
             _dbContext = dbContext;
+            _logger = logger;
         }
 
         public int Priority => 1;
@@ -105,7 +109,7 @@ namespace Texo.Infrastructure.Db.Service
                 }
                 catch
                 {
-                    // ignored
+                    _logger.Debug("Transaction rollback failed on dispose");
                 }
 
                 _currentTransaction.Dispose();
