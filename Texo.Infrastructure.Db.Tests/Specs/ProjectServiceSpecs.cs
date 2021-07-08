@@ -11,6 +11,8 @@ using Texo.Infrastructure.Db.Module;
 using Texo.Infrastructure.Db.Service;
 using FluentAssertions;
 using LanguageExt;
+using Serilog;
+using Serilog.Core;
 using Texo.Domain.Api.Entity;
 
 using static LanguageExt.Prelude;
@@ -32,9 +34,13 @@ namespace Texo.Infrastructure.Db.Tests.Specs
             _connection = new SQLiteConnection(@"Data Source=:memory:");
             _connection.Open();
             
+            // Declaring the logger
+            var logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
+
             // Now, creating the IOC container.
             var builder = new ContainerBuilder();
 
+            builder.RegisterInstance(logger).As<Logger>();
             builder.RegisterInstance(_connection).As<DbConnection>();
             builder.RegisterInstance(TexoUtils.DefaultClock).As<IClock>();
             builder.RegisterInstance(TexoUtils.DefaultIdGenerator).As<IIdGenerator>();

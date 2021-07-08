@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using LanguageExt;
 using Texo.Domain.Api.Entity;
 
@@ -11,5 +12,6 @@ namespace Texo.Domain.Api.Repository
         Try<Project> Update(Project project);
         
         void Delete(Guid projectId);
+        Try<IEnumerable<Project>> FindAll();
     }
 }

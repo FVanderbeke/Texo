@@ -1,5 +1,7 @@
 ﻿#nullable enable
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using LanguageExt;
 using NodaTime;
 using Texo.Domain.Api.Entity;
@@ -54,6 +56,11 @@ namespace Texo.Domain.Api.Service
         public TryOption<Project> ModifyDescription(Guid projectId, string? newDescription = null)
         {
             return FindAndUpdate(projectId, p => p.UpdateDescription(_clock.GetCurrentInstant(), newDescription));
+        }
+
+        public Try<List<Project>> All()
+        {
+            return _txManager.Submit(() => _repository.FindAll().Map(projects => projects.ToList()));
         }
     }
 }

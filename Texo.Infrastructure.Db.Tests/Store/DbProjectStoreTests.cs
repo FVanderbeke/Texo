@@ -7,6 +7,8 @@ using FluentAssertions;
 using LanguageExt;
 using NodaTime;
 using NUnit.Framework;
+using Serilog;
+using Serilog.Core;
 using Texo.Domain.Api.Entity;
 using Texo.Domain.Api.Factory;
 using Texo.Domain.Api.Repository;
@@ -36,9 +38,13 @@ namespace Texo.Infrastructure.Db.Tests.Store
             _connection = new SQLiteConnection(@"Data Source=:memory:");
             _connection.Open();
 
+            // Declaring the logger
+            var logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
+
             // Now, creating the IOC container.
             var builder = new ContainerBuilder();
-
+            
+            builder.RegisterInstance(logger).As<Logger>();
             builder.RegisterInstance(_connection).As<DbConnection>();
             builder.RegisterInstance(TexoUtils.DefaultClock).As<IClock>();
             builder.RegisterInstance(TexoUtils.DefaultIdGenerator).As<IIdGenerator>();
@@ -99,6 +105,45 @@ namespace Texo.Infrastructure.Db.Tests.Store
                 Succ: project => AssertOnProject(project, id, name, creationDate, description),
                 Fail: error => Assert.Fail($"Error occured : {error.Message}\n\nStack : {error.StackTrace}")
             );
+        }
+
+        [Test]
+        public void FindAll_Should_ReturnAllProjects()
+        {
+            var id1 = TexoUtils.DefaultIdGenerator.NewGuid();
+            var id2 = TexoUtils.DefaultIdGenerator.NewGuid();
+
+            var name1 = "project1";
+            var name2 = "project2";
+
+            var date1 = TexoUtils.DefaultClock.GetCurrentInstant();
+            var date2 = TexoUtils.DefaultClock.GetCurrentInstant();
+            Project? project1 = null, project2 = null;
+
+            _txManager?.Execute(() =>
+            {
+                project1 = _store?.Create(id1, name1, date1).IfFail(e =>
+                {
+                    Assert.Fail(e.Message);
+                    return null;
+                });
+                project2 = _store?.Create(id2, name2, date2).IfFail(e =>
+                {
+                    Assert.Fail(e.Message);
+                    return null;
+                });
+            });
+
+            var result = _txManager?.Submit(() => _store?.FindAll());
+
+            result.Match(
+                projects =>
+                {
+                    projects.Should().HaveCount(2);
+                    projects.Should().Contain(project1).And.Contain(project2);
+                },
+                e => Assert.Fail(e.Message));
+
         }
     }
 }

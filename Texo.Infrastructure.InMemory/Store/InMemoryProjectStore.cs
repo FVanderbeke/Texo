@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using LanguageExt;
 using NodaTime;
 using Texo.Domain.Api.Entity;
@@ -42,6 +43,11 @@ namespace Texo.Infrastructure.InMemory.Store
         public void Delete(Guid projectId)
         {
             _projects.Remove(projectId);
+        }
+
+        public Try<IEnumerable<Project>> FindAll()
+        {
+            return () => _projects.Values.ToList();
         }
     }
 }

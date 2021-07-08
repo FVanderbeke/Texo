@@ -11,6 +11,10 @@ using Texo.Domain.Api.Provider;
 using Texo.Domain.Api.Repository;
 using Texo.Domain.Api.Service;
 using Texo.Domain.Module;
+using FluentAssertions;
+using Serilog;
+using Serilog.Core;
+using static LanguageExt.List;
 
 namespace Texo.Domain.Tests
 {
@@ -29,19 +33,23 @@ namespace Texo.Domain.Tests
         {
             var builder = new ContainerBuilder();
 
+            // Declaring the logger
+            var logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
+            
             // Creating mock instances.
             _txProvider = Mock.Of<ITransactionProvider>();
             _clock = Mock.Of<IClock>();
             _idGenerator = Mock.Of<IIdGenerator>();
             _factory = Mock.Of<IProjectFactory>();
             _repository = Mock.Of<IProjectRepository>();
-
+            
             // Mocking specific method calls.
             Mock.Get(_txProvider)
                 .Setup(tx => tx.Priority)
                 .Returns(1);
 
             // Registering in container mock instances.
+            builder.RegisterInstance(logger).As<Logger>();
             builder.RegisterInstance(_clock).As<IClock>();
             builder.RegisterInstance(_idGenerator).As<IIdGenerator>();
             builder.RegisterInstance(_txProvider).As<ITransactionProvider>();
@@ -241,6 +249,27 @@ namespace Texo.Domain.Tests
                 },
                 None: () => Assert.Fail("Project should be found."),
                 Fail: (e) => Assert.Fail("Error occurred: " + e.Message));
+        }
+
+        [Test]
+        public void CallAll_Should_ReturnAllProjects()
+        {
+            // Arrange
+            var creationDate = NodaTime.SystemClock.Instance.GetCurrentInstant();
+
+            var project1 = new Project(Guid.NewGuid(), "project1", creationDate);
+            var project2 = new Project(Guid.NewGuid(), "project1", creationDate);
+            
+            var projects = create(project1, project2);
+            
+            Mock.Get(_repository).Setup(repo => repo.FindAll()).Returns(() => projects);
+
+            // Act
+            var result = _projects.All();
+
+            result.Match(
+                p => p.Should().Contain(project1).And.Contain(project2),
+                error => Assert.Fail("Error : " + error.Message));
         }
     }
 }
