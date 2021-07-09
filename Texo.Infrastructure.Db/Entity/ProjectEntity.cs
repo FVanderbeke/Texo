@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using LanguageExt;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
-using Texo.Domain.Api.Entity;
+using Texo.Domain.Model.Entity;
 using static LanguageExt.Prelude;
 
 namespace Texo.Infrastructure.Db.Entity

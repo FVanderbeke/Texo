@@ -1,6 +1,6 @@
 ﻿using System;
 using NodaTime;
-using Texo.Domain.Api.Service;
+using Texo.Domain.Model.Service;
 
 namespace Texo.Infrastructure.Db.Service
 {

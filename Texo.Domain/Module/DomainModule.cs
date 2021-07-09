@@ -1,7 +1,5 @@
 ﻿using Autofac;
-using Texo.Domain.Api.Provider;
-using Texo.Domain.Api.Service;
-using Texo.Domain.Default.SemVer;
+using Texo.Domain.Model.Service;
 
 namespace Texo.Domain.Module
 {
@@ -9,11 +7,9 @@ namespace Texo.Domain.Module
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<GlobalTransactionProvider>().SingleInstance();
+            builder.RegisterType<GlobalTransactionService>().SingleInstance();
             builder.RegisterType<TransactionManager>().SingleInstance();
             builder.RegisterType<ProjectManager>().SingleInstance();
-            builder.RegisterType<Versions>().SingleInstance();
-            builder.RegisterType<SemVerVersionProvider>().As<IVersionProvider>().SingleInstance();
         }
     }
 }

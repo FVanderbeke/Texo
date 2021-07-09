@@ -4,7 +4,6 @@ using System.Data.SQLite;
 using Autofac;
 using NodaTime;
 using NUnit.Framework;
-using Texo.Domain.Api.Service;
 using Texo.Domain.Module;
 using Texo.Infrastructure.Db.Internal;
 using Texo.Infrastructure.Db.Module;
@@ -12,9 +11,8 @@ using Texo.Infrastructure.Db.Service;
 using FluentAssertions;
 using LanguageExt;
 using Serilog;
-using Serilog.Core;
-using Texo.Domain.Api.Entity;
-
+using Texo.Domain.Model.Entity;
+using Texo.Domain.Model.Service;
 using static LanguageExt.Prelude;
 
 namespace Texo.Infrastructure.Db.Tests.Specs
@@ -40,7 +38,7 @@ namespace Texo.Infrastructure.Db.Tests.Specs
             // Now, creating the IOC container.
             var builder = new ContainerBuilder();
 
-            builder.RegisterInstance(logger).As<Logger>();
+            builder.RegisterInstance(logger).As<ILogger>();
             builder.RegisterInstance(_connection).As<DbConnection>();
             builder.RegisterInstance(TexoUtils.DefaultClock).As<IClock>();
             builder.RegisterInstance(TexoUtils.DefaultIdGenerator).As<IIdGenerator>();

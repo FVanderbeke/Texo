@@ -1,0 +1,12 @@
+E:\Workspaces\Dev\Texo\Texo.Application.Api\bin\Debug\net5.0\Texo.Application.Api.deps.json
+E:\Workspaces\Dev\Texo\Texo.Application.Api\bin\Debug\net5.0\Texo.Application.Api.dll
+E:\Workspaces\Dev\Texo\Texo.Application.Api\bin\Debug\net5.0\ref\Texo.Application.Api.dll
+E:\Workspaces\Dev\Texo\Texo.Application.Api\bin\Debug\net5.0\Texo.Application.Api.pdb
+E:\Workspaces\Dev\Texo\Texo.Application.Api\obj\Debug\net5.0\Texo.Application.Api.csproj.AssemblyReference.cache
+E:\Workspaces\Dev\Texo\Texo.Application.Api\obj\Debug\net5.0\Texo.Application.Api.GeneratedMSBuildEditorConfig.editorconfig
+E:\Workspaces\Dev\Texo\Texo.Application.Api\obj\Debug\net5.0\Texo.Application.Api.AssemblyInfoInputs.cache
+E:\Workspaces\Dev\Texo\Texo.Application.Api\obj\Debug\net5.0\Texo.Application.Api.AssemblyInfo.cs
+E:\Workspaces\Dev\Texo\Texo.Application.Api\obj\Debug\net5.0\Texo.Application.Api.csproj.CoreCompileInputs.cache
+E:\Workspaces\Dev\Texo\Texo.Application.Api\obj\Debug\net5.0\Texo.Application.Api.dll
+E:\Workspaces\Dev\Texo\Texo.Application.Api\obj\Debug\net5.0\ref\Texo.Application.Api.dll
+E:\Workspaces\Dev\Texo\Texo.Application.Api\obj\Debug\net5.0\Texo.Application.Api.pdb

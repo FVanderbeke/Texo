@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using LanguageExt;
 using NodaTime;
-using Texo.Domain.Api.Entity;
-using Texo.Domain.Api.Factory;
-using Texo.Domain.Api.Repository;
+using Texo.Domain.Model.Entity;
+using Texo.Domain.Model.Factory;
+using Texo.Domain.Model.Repository;
 using static LanguageExt.Prelude;
 
 namespace Texo.Infrastructure.InMemory.Store

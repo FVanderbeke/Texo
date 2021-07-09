@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Module\" />
-    <Folder Include="Api\Service\" />
+    <Folder Include="Model\Service\" />
   </ItemGroup>
 
   <ItemGroup>

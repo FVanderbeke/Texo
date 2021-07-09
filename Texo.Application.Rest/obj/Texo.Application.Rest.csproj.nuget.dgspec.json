@@ -1,0 +1,218 @@
+{
+  "format": 1,
+  "restore": {
+    "E:\\Workspaces\\Dev\\Texo\\Texo.Application.Rest\\Texo.Application.Rest.csproj": {}
+  },
+  "projects": {
+    "E:\\Workspaces\\Dev\\Texo\\Texo.Application.Api\\Texo.Application.Api.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\Workspaces\\Dev\\Texo\\Texo.Application.Api\\Texo.Application.Api.csproj",
+        "projectName": "Texo.Application.Api",
+        "projectPath": "E:\\Workspaces\\Dev\\Texo\\Texo.Application.Api\\Texo.Application.Api.csproj",
+        "packagesPath": "C:\\Users\\Frederick\\.nuget\\packages\\",
+        "outputPath": "E:\\Workspaces\\Dev\\Texo\\Texo.Application.Api\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Frederick\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "NodaTime": {
+              "target": "Package",
+              "version": "[3.0.5, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "E:\\Workspaces\\Dev\\Texo\\Texo.Application.Rest\\Texo.Application.Rest.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\Workspaces\\Dev\\Texo\\Texo.Application.Rest\\Texo.Application.Rest.csproj",
+        "projectName": "Texo.Application.Rest",
+        "projectPath": "E:\\Workspaces\\Dev\\Texo\\Texo.Application.Rest\\Texo.Application.Rest.csproj",
+        "packagesPath": "C:\\Users\\Frederick\\.nuget\\packages\\",
+        "outputPath": "E:\\Workspaces\\Dev\\Texo\\Texo.Application.Rest\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Frederick\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "E:\\Workspaces\\Dev\\Texo\\Texo.Application.Api\\Texo.Application.Api.csproj": {
+                "projectPath": "E:\\Workspaces\\Dev\\Texo\\Texo.Application.Api\\Texo.Application.Api.csproj"
+              },
+              "E:\\Workspaces\\Dev\\Texo\\Texo.Domain\\Texo.Domain.csproj": {
+                "projectPath": "E:\\Workspaces\\Dev\\Texo\\Texo.Domain\\Texo.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[5.6.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "E:\\Workspaces\\Dev\\Texo\\Texo.Domain\\Texo.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\Workspaces\\Dev\\Texo\\Texo.Domain\\Texo.Domain.csproj",
+        "projectName": "Texo.Domain",
+        "projectPath": "E:\\Workspaces\\Dev\\Texo\\Texo.Domain\\Texo.Domain.csproj",
+        "packagesPath": "C:\\Users\\Frederick\\.nuget\\packages\\",
+        "outputPath": "E:\\Workspaces\\Dev\\Texo\\Texo.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Frederick\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Autofac": {
+              "target": "Package",
+              "version": "[6.2.0, )"
+            },
+            "LanguageExt.Core": {
+              "target": "Package",
+              "version": "[3.4.15, )"
+            },
+            "NodaTime": {
+              "target": "Package",
+              "version": "[3.0.5, )"
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[2.10.1-dev-01343, )"
+            },
+            "Serilog.Sinks.Console": {
+              "target": "Package",
+              "version": "[4.0.0-dev-00839, )"
+            },
+            "Serilog.Sinks.File": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

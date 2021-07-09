@@ -5,15 +5,13 @@ using LanguageExt;
 using Moq;
 using NodaTime;
 using NUnit.Framework;
-using Texo.Domain.Api.Entity;
-using Texo.Domain.Api.Factory;
-using Texo.Domain.Api.Provider;
-using Texo.Domain.Api.Repository;
-using Texo.Domain.Api.Service;
 using Texo.Domain.Module;
 using FluentAssertions;
 using Serilog;
-using Serilog.Core;
+using Texo.Domain.Model.Entity;
+using Texo.Domain.Model.Factory;
+using Texo.Domain.Model.Repository;
+using Texo.Domain.Model.Service;
 using static LanguageExt.List;
 
 namespace Texo.Domain.Tests
@@ -24,7 +22,7 @@ namespace Texo.Domain.Tests
         private ProjectManager _projects;
         private IClock _clock;
         private IIdGenerator _idGenerator;
-        private ITransactionProvider _txProvider;
+        private ITransactionService _txService;
         private IProjectFactory _factory;
         private IProjectRepository _repository;
 
@@ -37,22 +35,22 @@ namespace Texo.Domain.Tests
             var logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
             
             // Creating mock instances.
-            _txProvider = Mock.Of<ITransactionProvider>();
+            _txService = Mock.Of<ITransactionService>();
             _clock = Mock.Of<IClock>();
             _idGenerator = Mock.Of<IIdGenerator>();
             _factory = Mock.Of<IProjectFactory>();
             _repository = Mock.Of<IProjectRepository>();
             
             // Mocking specific method calls.
-            Mock.Get(_txProvider)
+            Mock.Get(_txService)
                 .Setup(tx => tx.Priority)
                 .Returns(1);
 
             // Registering in container mock instances.
-            builder.RegisterInstance(logger).As<Logger>();
+            builder.RegisterInstance(logger).As<ILogger>();
             builder.RegisterInstance(_clock).As<IClock>();
             builder.RegisterInstance(_idGenerator).As<IIdGenerator>();
-            builder.RegisterInstance(_txProvider).As<ITransactionProvider>();
+            builder.RegisterInstance(_txService).As<ITransactionService>();
             builder.RegisterInstance(_factory).As<IProjectFactory>();
             builder.RegisterInstance(_repository).As<IProjectRepository>();
 
@@ -109,9 +107,9 @@ namespace Texo.Domain.Tests
                 Mock.Get(_factory).Verify(
                     f => f.Create(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<Instant>(), It.IsAny<string>()),
                     Times.Once);
-                Mock.Get(_txProvider).Verify(t => t.Begin(It.IsAny<Dictionary<string, object>>()), Times.Once);
-                Mock.Get(_txProvider).Verify(t => t.Commit(It.IsAny<Dictionary<string, object>>()), Times.Once);
-                Mock.Get(_txProvider).Verify(t => t.Rollback(It.IsAny<Dictionary<string, object>>()), Times.Never);
+                Mock.Get(_txService).Verify(t => t.Begin(It.IsAny<Dictionary<string, object>>()), Times.Once);
+                Mock.Get(_txService).Verify(t => t.Commit(It.IsAny<Dictionary<string, object>>()), Times.Once);
+                Mock.Get(_txService).Verify(t => t.Rollback(It.IsAny<Dictionary<string, object>>()), Times.Never);
             }, Fail: e => { Assert.Fail("Error occurred: " + e.Message); });
         }
 
@@ -156,9 +154,9 @@ namespace Texo.Domain.Tests
 
                 Mock.Get(_factory)
                     .Verify(f => f.Create(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<Instant>(), null), Times.Once);
-                Mock.Get(_txProvider).Verify(t => t.Begin(It.IsAny<Dictionary<string, object>>()), Times.Once);
-                Mock.Get(_txProvider).Verify(t => t.Commit(It.IsAny<Dictionary<string, object>>()), Times.Once);
-                Mock.Get(_txProvider).Verify(t => t.Rollback(It.IsAny<Dictionary<string, object>>()), Times.Never);
+                Mock.Get(_txService).Verify(t => t.Begin(It.IsAny<Dictionary<string, object>>()), Times.Once);
+                Mock.Get(_txService).Verify(t => t.Commit(It.IsAny<Dictionary<string, object>>()), Times.Once);
+                Mock.Get(_txService).Verify(t => t.Rollback(It.IsAny<Dictionary<string, object>>()), Times.Never);
             }, Fail: e => { Assert.Fail("Error occurred: " + e.Message); });
         }
 
