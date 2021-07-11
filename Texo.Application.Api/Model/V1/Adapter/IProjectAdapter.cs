@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Texo.Application.Api.Util.Query;
+using Texo.Application.Api.Model.V1.Query;
 
 #nullable enable
 namespace Texo.Application.Api.Model.V1
 {
-    public interface IProjectProvider
+    public interface IProjectAdapter
     {
         Task<ProjectDetailDto> AddAsync(string name, string? description = null);
         
