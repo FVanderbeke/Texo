@@ -33,34 +33,25 @@ namespace Texo.Domain.Model.Service
             _repository = repository;
         }
 
-        public Try<Project> Declare(string name, string? description = null)
-        {
-            
-            return _txManager.Submit(() => _factory.Create(
+        public Try<Project> Declare(string name, string? description = null) => _txManager.Submit(() => _factory.Create(
                     _idGenerator.NewGuid(),
                     name,
                     _clock.GetCurrentInstant(),
                     Optional(description).Filter(d => !string.IsNullOrWhiteSpace(d)).IfNoneUnsafe(() => null!)));
-        }
 
-        private TryOption<Project> FindAndUpdate(Guid projectId, Func<Project, Project> updateFunc)
-        {
-            return _txManager.Submit(() => _repository.FindOne(projectId).Map(updateFunc).Bind(p => _repository.Update(p).ToTryOption()));
-        }
+        private TryOption<Project> FindAndUpdate(Guid projectId, Func<Project, Project> updateFunc) => _txManager.Submit(() => _repository.FindOne(projectId).Map(updateFunc).Bind(p => _repository.Update(p).ToTryOption()));
 
-        public TryOption<Project> ModifyName(Guid projectId, string newName)
-        {
-            return FindAndUpdate(projectId, p => p.UpdateName(_clock.GetCurrentInstant(), newName));
-        }
+        public TryOption<Project> ModifyName(Guid projectId, string newName) => FindAndUpdate(projectId, p => p.UpdateName(_clock.GetCurrentInstant(), newName));
 
-        public TryOption<Project> ModifyDescription(Guid projectId, string? newDescription = null)
-        {
-            return FindAndUpdate(projectId, p => p.UpdateDescription(_clock.GetCurrentInstant(), newDescription));
-        }
+        public TryOption<Project> ModifyDescription(Guid projectId, string? newDescription = null) => FindAndUpdate(projectId, p => p.UpdateDescription(_clock.GetCurrentInstant(), newDescription));
 
-        public Try<List<Project>> All()
+        public Try<List<Project>> All() => _txManager.Submit(() => _repository.FindAll().Map(projects => projects.ToList()));
+
+        public TryOption<Project> One(Guid id) => _txManager.Submit(() => _repository.FindOne(id));
+
+        public TryOption<Project> One(string name)
         {
-            return _txManager.Submit(() => _repository.FindAll().Map(projects => projects.ToList()));
+            throw new NotImplementedException();
         }
     }
 }

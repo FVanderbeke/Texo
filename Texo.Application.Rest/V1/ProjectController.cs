@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Texo.Application.Api.Model.V1.Dto;
 using Texo.Domain.Model.Entity;
@@ -21,7 +20,7 @@ namespace Texo.Application.Rest.V1
 
         public ProjectController(ProjectManager projects, DbContext context)
         {
-            // Todo : change it... Ensure somew
+            // Todo : change it... 
             
             context.Database.EnsureCreated();
             
@@ -62,9 +61,6 @@ namespace Texo.Application.Rest.V1
             _projects.All().Map(list => list.Map(ToDto)).IfFailThrow();
 
         [HttpGet("{id}")]
-        public async Task<ProjectDetailDto> FindById(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<ProjectDetailDto> FindById(Guid id) => _projects.One(id).Map(ToDetailDto).IfFailThrow();
     }
 }
