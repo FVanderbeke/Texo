@@ -5,16 +5,16 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+        <PackageReference Include="MicroElements.Swashbuckle.NodaTime" Version="4.0.1" />
+        <PackageReference Include="NodaTime.Serialization.SystemTextJson" Version="1.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Texo.Application.Api\Texo.Application.Api.csproj" />
       <ProjectReference Include="..\Texo.Domain\Texo.Domain.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Workspace\V1" />
+      <ProjectReference Include="..\Texo.Infrastructure.Db\Texo.Infrastructure.Db.csproj" />
     </ItemGroup>
 
 </Project>

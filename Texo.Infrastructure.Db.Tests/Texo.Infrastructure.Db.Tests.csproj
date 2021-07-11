@@ -19,8 +19,4 @@
       <ProjectReference Include="..\Texo.Infrastructure.Db\Texo.Infrastructure.Db.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Store" />
-    </ItemGroup>
-
 </Project>

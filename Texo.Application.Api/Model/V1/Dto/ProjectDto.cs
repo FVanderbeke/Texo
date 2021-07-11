@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Texo.Application.Api.Model.V1
+namespace Texo.Application.Api.Model.V1.Dto
 {
     public class ProjectDto
     {

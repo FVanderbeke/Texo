@@ -93,6 +93,9 @@
               },
               "E:\\Workspaces\\Dev\\Texo\\Texo.Domain\\Texo.Domain.csproj": {
                 "projectPath": "E:\\Workspaces\\Dev\\Texo\\Texo.Domain\\Texo.Domain.csproj"
+              },
+              "E:\\Workspaces\\Dev\\Texo\\Texo.Infrastructure.Db\\Texo.Infrastructure.Db.csproj": {
+                "projectPath": "E:\\Workspaces\\Dev\\Texo\\Texo.Infrastructure.Db\\Texo.Infrastructure.Db.csproj"
               }
             }
           }
@@ -107,6 +110,18 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Autofac.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[7.1.0, )"
+            },
+            "MicroElements.Swashbuckle.NodaTime": {
+              "target": "Package",
+              "version": "[4.0.1, )"
+            },
+            "NodaTime.Serialization.SystemTextJson": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[5.6.3, )"
@@ -193,6 +208,84 @@
             "Serilog.Sinks.File": {
               "target": "Package",
               "version": "[5.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "E:\\Workspaces\\Dev\\Texo\\Texo.Infrastructure.Db\\Texo.Infrastructure.Db.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\Workspaces\\Dev\\Texo\\Texo.Infrastructure.Db\\Texo.Infrastructure.Db.csproj",
+        "projectName": "Texo.Infrastructure.Db",
+        "projectPath": "E:\\Workspaces\\Dev\\Texo\\Texo.Infrastructure.Db\\Texo.Infrastructure.Db.csproj",
+        "packagesPath": "C:\\Users\\Frederick\\.nuget\\packages\\",
+        "outputPath": "E:\\Workspaces\\Dev\\Texo\\Texo.Infrastructure.Db\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Frederick\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "E:\\Workspaces\\Dev\\Texo\\Texo.Domain\\Texo.Domain.csproj": {
+                "projectPath": "E:\\Workspaces\\Dev\\Texo\\Texo.Domain\\Texo.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.0-preview.5.21301.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.0-preview.5.21301.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[6.0.0-preview.5.21301.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[6.0.0-preview.5.21301.9, )"
             }
           },
           "imports": [
