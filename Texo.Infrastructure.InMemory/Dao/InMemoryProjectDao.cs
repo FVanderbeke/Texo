@@ -7,27 +7,26 @@ using NodaTime;
 using Texo.Domain.Model.Entity;
 using Texo.Domain.Model.Factory;
 using Texo.Domain.Model.Repository;
-using static LanguageExt.Prelude;
 
-namespace Texo.Infrastructure.InMemory.Store
+namespace Texo.Infrastructure.InMemory.Dao
 {
-    public class InMemoryProjectStore : IProjectFactory, IProjectRepository
+    public class InMemoryProjectDao : IProjectFactory, IProjectRepository
     {
         private readonly Dictionary<Guid, Project> _projects;
 
-        public InMemoryProjectStore(Dictionary<Guid, Project> projects)
+        public InMemoryProjectDao(Dictionary<Guid, Project> projects)
         {
             _projects = projects;
         }
 
         public Try<Project> Create(Guid id, string name, Instant creationDate, string? description = null)
         {
-            return Try(() => new Project(id, name, creationDate, Description: Optional(description).Filter(d => !string.IsNullOrWhiteSpace(d))));
+            return Prelude.Try(() => new Project(id, name, creationDate, Description: Prelude.Optional(description).Filter(d => !string.IsNullOrWhiteSpace(d))));
         }
 
         public TryOption<Project> FindOne(Guid projectId)
         {
-            return TryOption(() => _projects[projectId]);
+            return Prelude.TryOption(() => _projects[projectId]);
         }
 
         public Try<Project> Update(Project project)
