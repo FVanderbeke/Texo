@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Texo.Application.Api.Model.V1.Dto;
 using Texo.Domain.Model.Entity;
 using Texo.Domain.Model.Service;
-using Texo.Infrastructure.Db.Internal;
 
 namespace Texo.Application.Rest.V1
 {
@@ -18,12 +17,9 @@ namespace Texo.Application.Rest.V1
     {
         private readonly ProjectManager _projects;
 
-        public ProjectController(ProjectManager projects, DbContext context)
+        public ProjectController(ProjectManager projects)
         {
-            // Todo : change it... 
-            
-            context.Database.EnsureCreated();
-            
+           
             _projects = projects;
         }
 
@@ -61,6 +57,15 @@ namespace Texo.Application.Rest.V1
             _projects.All().Map(list => list.Map(ToDto)).IfFailThrow();
 
         [HttpGet("{id}")]
-        public async Task<ProjectDetailDto> FindById(Guid id) => _projects.One(id).Map(ToDetailDto).IfFailThrow();
+        public async Task<IActionResult> FindById(Guid id)
+        {
+            var result = _projects.One(id);
+            if (result.IsNone())
+            {
+                return NotFound();
+            }
+            
+            return _projects.One(id).Map(ToDetailDto).Map(Ok).IfFailThrow();
+        }
     }
 }

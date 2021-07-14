@@ -47,12 +47,22 @@ namespace Texo.Infrastructure.Db.Entity
         [MaxLength(255)]
         public string? Description { get; set; }
 
+        private DateTime CheckKind(DateTime dateTime)
+        {
+            if (dateTime.Kind == DateTimeKind.Unspecified)
+            {
+                return DateTime.SpecifyKind(dateTime, DateTimeKind.Local).ToUniversalTime();
+            }
+
+            return dateTime;
+        }
+        
         public Project ToProject()
         {
-            Option<Instant> modifDate = Optional(ModificationDate).Map(Instant.FromDateTimeUtc);
+            Option<Instant> modifDate = Optional(ModificationDate).Map(CheckKind).Map(Instant.FromDateTimeUtc);
             Option<string> description = Optional(Description);
             
-            return new Project(Gid, Name, Instant.FromDateTimeUtc(CreationDate), modifDate, description);
+            return new Project(Gid, Name, Instant.FromDateTimeUtc(CheckKind(CreationDate)), modifDate, description);
         }
         
     }

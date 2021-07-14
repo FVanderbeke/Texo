@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Texo.Infrastructure.Db.Entity;
 
-namespace Texo.Infrastructure.Db.Internal
+namespace Texo.Infrastructure.Db.Service
 {
     public class DbContext : Microsoft.EntityFrameworkCore.DbContext
     {
@@ -17,7 +17,7 @@ namespace Texo.Infrastructure.Db.Internal
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(_connection); //@"Data Source=:memory:");
+            optionsBuilder.UseSqlite(_connection);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -9,24 +9,26 @@ using Texo.Domain.Model.Entity;
 using Texo.Domain.Model.Factory;
 using Texo.Domain.Model.Repository;
 using Texo.Infrastructure.Db.Entity;
-using Texo.Infrastructure.Db.Internal;
+using Texo.Infrastructure.Db.Service;
+
 using static LanguageExt.Prelude;
 
 namespace Texo.Infrastructure.Db.Dao
 {
     public class DbProjectDao : IProjectFactory, IProjectRepository
     {
-        private readonly DbContext _context;
+        private readonly DbTransactionService _txService;
         private readonly ILogger _logger;
 
-        public DbProjectDao(DbContext context, ILogger logger)
+        public DbProjectDao(DbTransactionService service, ILogger logger)
         {
-            _context = context;
+            _txService = service;
             _logger = logger;
         }
 
-        public Try<Project> Create(Guid id, string name, Instant creationDate, string? description = null) => () =>
+        public Try<Project> Create(Guid id, string name, Instant creationDate, string? description = null) 
         {
+            var context = _txService.CurrentDbContext();
             ProjectEntity entity = new()
             {
                 Gid = id,
@@ -34,16 +36,20 @@ namespace Texo.Infrastructure.Db.Dao
                 CreationDate = creationDate.ToDateTimeUtc(),
                 Description = description
             };
-            _context.Projects.Add(entity);
+            context.Projects.Add(entity);
 
             // Forcing save to update the internal entity Id.
-            _context.SaveChanges();
+            context.SaveChanges();
 
-            return entity.ToProject();
-        };
+            return Try(entity.ToProject());
+        }
 
-        public TryOption<Project> FindOne(Guid projectId) => () =>
-            (_context.Projects.SingleOrDefault(p => p.Gid.Equals(projectId))?.ToProject() ?? null)!;
+        public TryOption<Project> FindOne(Guid projectId)
+        {
+            return TryOption
+            (_txService.CurrentDbContext().Projects.SingleOrDefault(p => p.Gid.Equals(projectId))?.ToProject() ??
+             null)!;
+        }
 
         public Try<Project> Update(Project project)
         {
@@ -55,6 +61,9 @@ namespace Texo.Infrastructure.Db.Dao
             throw new NotImplementedException();
         }
 
-        public Try<IEnumerable<Project>> FindAll() => () => (from p in _context.Projects select p.ToProject()).ToList();
+        public Try<IEnumerable<Project>> FindAll()
+        {
+            return Try<IEnumerable<Project>>((from p in _txService.CurrentDbContext().Projects select p.ToProject()).ToList());
+        }
     }
 }

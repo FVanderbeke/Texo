@@ -1,124 +1,142 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Transactions;
+using LanguageExt;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Serilog;
 using Texo.Domain.Model.Service;
-using Texo.Infrastructure.Db.Internal;
 
 namespace Texo.Infrastructure.Db.Service
 {
     public class DbTransactionService : ITransactionService
     {
-        private const string EfCoreContextKey = "EF_CORE_CONTEXT";
-        
-        private readonly DbContext _dbContext;
+        private readonly DbContextFactory _contextFactory;
         private readonly ILogger _logger;
-        private readonly ThreadLocal<uint> _reentrantCount = new(() => 0);
-        private readonly ThreadLocal<IDbContextTransaction> _currentTransaction = new ThreadLocal<IDbContextTransaction>();
+        private readonly ThreadLocal<DbContext> _currentContext = new ThreadLocal<DbContext>();
+
+        private readonly ThreadLocal<IDbContextTransaction> _currentTransaction =
+            new ThreadLocal<IDbContextTransaction>();
+        private readonly ThreadLocal<int> _reentrantCounter = new ThreadLocal<int>();
         
-        public DbTransactionService(DbContext dbContext, ILogger logger)
+        public DbTransactionService(DbContextFactory contextFactory, ILogger logger)
         {
-            _dbContext = dbContext;
+            _contextFactory = contextFactory;
             _logger = logger;
         }
 
         public int Priority => 1;
         public void OnLoad(Dictionary<string, object> context)
         {
-            context.Add(EfCoreContextKey, _dbContext);
         }
 
         public void Begin(Dictionary<string, object> context)
         {
-            if (_reentrantCount.Value == 0)
+
+            _logger.Debug("[Begin start] Trying to begin a new transaction...");
+
+            if (_currentContext.Value.IsNull())
             {
-                _currentTransaction.Value = _dbContext.Database.BeginTransaction();
+                _reentrantCounter.Value = 0;
+                _currentContext.Value = _contextFactory.Create();
+                _currentTransaction.Value = _currentContext.Value.Database.BeginTransaction();
             }
-            _reentrantCount.Value++;
+            else
+            {
+                _reentrantCounter.Value++;
+            }
+            
+
+            _logger.Debug("[Begin end]");
         }
 
         public void Commit(Dictionary<string, object> context)
         {
-            if (IsNullOrDisposed(_currentTransaction))
+            _logger.Debug("[Commit start]");
+            
+            if (_currentContext.Value.IsNull())
             {
-                _reentrantCount.Value = 0;
-                throw new TransactionException("No active transaction found.");
+                throw new TransactionException("Can't save changes. No active context found.");
+            }
+            
+            if (_currentTransaction.Value.IsNull())
+            {
+                throw new TransactionException("Can't perform any commit. No active transaction found.");
             }
 
-            if (_reentrantCount.Value == 0)
+            if (_reentrantCounter.Value == 0)
             {
-                throw new TransactionException("Bad reentrant count. Check if the transaction has currently begun.");
-            }
-            
-            _dbContext.SaveChanges();
-            
-            if (_reentrantCount.Value == 1)
-            {
+                _currentContext.Value.SaveChanges();
                 _currentTransaction.Value.Commit();
-                _reentrantCount.Value = 0;
+                DisposeContent();
             }
             else
             {
-                // Reentrant case.
-                _reentrantCount.Value--;
+                _reentrantCounter.Value--;
             }
         }
 
-        public void Rollback(Dictionary<string, object> context)
+        private void DisposeContent()
         {
-            if (!IsNullOrDisposed(_reentrantCount) && _reentrantCount.Value >= 1 && !IsNullOrDisposed(_currentTransaction))
+            try
             {
-                try
+                if (_currentTransaction.Value is not null)
                 {
-                    _currentTransaction.Value.Rollback();
-                }
-                finally
-                {
-                    _reentrantCount.Value = 0;
-                    _currentTransaction.Dispose();
+                    _currentTransaction.Value.Dispose();
                 }
             }
-        }
-
-        private bool IsNullOrDisposed<A>(ThreadLocal<A> instance)
-        {
-            if (instance is null)
+            catch (Exception e)
             {
-                return true;
+                _logger.Debug(e,"Error occurred when trying to dispose current transaction");
             }
 
             try
             {
-                return !instance.IsValueCreated;
+                if (_currentContext.Value is not null)
+                {
+                    _currentContext.Value.Dispose();                    
+                }
             }
-            catch
+            catch (Exception e)
             {
-                return true;
+                _logger.Debug(e,"Error occurred when trying to dispose current EF context");
+            }
+
+            _currentTransaction.Value = null;
+            _currentContext.Value = null;
+            _reentrantCounter.Value = 0;
+        }
+        
+        public void Rollback(Dictionary<string, object> context)
+        {
+            try
+            {
+                if (_currentTransaction.Value.IsNull())
+                {
+                    throw new TransactionException("Can't rollback changes. No active transaction found.");
+                }
+
+                if (_currentContext.Value.IsNull())
+                {
+                    throw new TransactionException("Can't rollback changes. No active transaction found.");
+                }
+                _currentTransaction.Value.Rollback();
+            }
+            finally
+            {
+                DisposeContent();
             }
         }
         
         public void OnDispose(Dictionary<string, object> context)
         {
-            context.Remove(EfCoreContextKey);
-            if (!IsNullOrDisposed(_currentTransaction))
-            {
-                try
-                {
-                    _currentTransaction.Value.Rollback();                    
-                }
-                catch
-                {
-                    _logger.Debug("Transaction rollback failed on dispose");
-                }
+            DisposeContent();
+        }
 
-                _currentTransaction.Dispose();
-            }
-
-            if (_reentrantCount is not null && _reentrantCount.IsValueCreated)
-            {
-                _reentrantCount.Dispose();
-            }
+        public DbContext CurrentDbContext()
+        {
+            return _currentContext.Value;
         }
     }
 }

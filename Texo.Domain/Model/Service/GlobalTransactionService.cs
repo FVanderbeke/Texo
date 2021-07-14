@@ -7,7 +7,7 @@ namespace Texo.Domain.Model.Service
 {
     public sealed class GlobalTransactionService : IDisposable
     {
-        private readonly Seq<ITransactionService> _providers;
+        private Seq<ITransactionService> _providers;
         private readonly Dictionary<string, object> _context;
 
         public GlobalTransactionService(IEnumerable<ITransactionService> providers)
@@ -36,12 +36,12 @@ namespace Texo.Domain.Model.Service
 
         public void Rollback()
         {
-            _providers.Do(t => t.Rollback(_context));
+            _providers.Reverse().ToSeq().Do(t => t.Rollback(_context));
         }
 
         public void Dispose()
         {
-            _providers.Do(t => t.OnDispose(_context));
+            _providers.Reverse().ToSeq().Do(t => t.OnDispose(_context));
         }
     }
 }

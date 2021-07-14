@@ -5,7 +5,6 @@ using Autofac;
 using NodaTime;
 using NUnit.Framework;
 using Texo.Domain.Module;
-using Texo.Infrastructure.Db.Internal;
 using Texo.Infrastructure.Db.Module;
 using Texo.Infrastructure.Db.Service;
 using FluentAssertions;
@@ -23,7 +22,6 @@ namespace Texo.Infrastructure.Db.Tests.Specs
         private ProjectManager? _manager;
         private Instant _startDate;
         private IContainer? _container;
-        private DbContext? _dbContext;
 
         [SetUp]
         public void Setup()
@@ -46,11 +44,7 @@ namespace Texo.Infrastructure.Db.Tests.Specs
             builder.RegisterModule(new DbModule());
 
             _container = builder.Build();
-            _dbContext = _container.Resolve<DbContext>();
             _manager = _container.Resolve<ProjectManager>();
-            
-            // Mandatory! Forcing SQLite file creation to work. 
-            _dbContext.Database.EnsureCreated();
             
             _startDate = TexoUtils.DefaultClock.GetCurrentInstant();
         }

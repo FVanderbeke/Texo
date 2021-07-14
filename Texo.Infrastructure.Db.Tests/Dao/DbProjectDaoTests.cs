@@ -14,7 +14,6 @@ using Texo.Domain.Model.Repository;
 using Texo.Domain.Model.Service;
 using Texo.Domain.Module;
 using Texo.Infrastructure.Db.Dao;
-using Texo.Infrastructure.Db.Internal;
 using Texo.Infrastructure.Db.Module;
 using Texo.Infrastructure.Db.Service;
 
@@ -26,7 +25,6 @@ namespace Texo.Infrastructure.Db.Tests.Dao
         private TransactionManager? _txManager;
         private DbProjectDao? _projectDao;
         private IContainer? _container;
-        private DbContext? _dbContext;
 
         [SetUp]
         public void Setup()
@@ -50,11 +48,7 @@ namespace Texo.Infrastructure.Db.Tests.Dao
 
             _container = builder.Build();
             _txManager = _container.Resolve<TransactionManager>();
-            _dbContext = _container.Resolve<DbContext>();
             _projectDao = _container.Resolve<IProjectFactory>() as DbProjectDao;
-
-            // Forcing SQLite file creation to work. 
-            _dbContext.Database.EnsureCreated();
             
             // Checking instantiation in container...
             _container.Resolve<IProjectRepository>().Should().Be(_projectDao);
@@ -64,7 +58,6 @@ namespace Texo.Infrastructure.Db.Tests.Dao
         public void TearDown()
         {
             _connection?.Dispose();
-            _dbContext?.Dispose();
             _container?.Dispose();
         }
 

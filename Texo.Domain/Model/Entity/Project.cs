@@ -41,5 +41,17 @@ namespace Texo.Domain.Model.Entity
                 ModificationDate: Optional(modificationDate)
             );
         }
+
+        public virtual bool Equals(Project? other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Id.Equals(other.Id) && Name == other.Name && CreationDate.Equals(other.CreationDate) && ModificationDate.Equals(other.ModificationDate) && Description.Equals(other.Description);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, Name, CreationDate, ModificationDate, Description);
+        }
     }
 }
