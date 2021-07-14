@@ -133,7 +133,38 @@ namespace Texo.Infrastructure.Db.Tests.Dao
                     projects.Should().Contain(project1).And.Contain(project2);
                 },
                 e => Assert.Fail(e.Message));
+        }
 
+        [Test]
+        public void Update_Should_ModifyProjectName()
+        {
+            var id = TexoUtils.DefaultIdGenerator.NewGuid();
+
+            var name = "project";
+            var newName = "new Project";
+
+            var date = TexoUtils.DefaultClock.GetCurrentInstant();
+            
+            Project project = _txManager?.Submit(() => _projectDao?.Create(id, name, date)).IfFail(e =>
+                {
+                    Assert.Fail(e.Message);
+                    return null;
+                });
+            
+            var updatedProject = new Project(project.Id, newName, project.CreationDate, project.ModificationDate,
+                project.Description);
+
+            project = _txManager?.Submit(() => _projectDao?.Update(updatedProject)).IfFail(e =>
+            {
+                Assert.Fail(e.Message);
+                return null;
+            });
+
+            project?.Id.Should().Be(id);
+            project?.Name.Should().Be(newName);
+            project?.CreationDate.Should().Be(date);
+            project?.ModificationDate.Should<Option<Instant>>().Be(Option<Instant>.None);
+            project?.Description.Should<Option<string>>().Be(Option<string>.None);
         }
     }
 }

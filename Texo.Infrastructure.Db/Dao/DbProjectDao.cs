@@ -26,9 +26,20 @@ namespace Texo.Infrastructure.Db.Dao
             _logger = logger;
         }
 
-        public Try<Project> Create(Guid id, string name, Instant creationDate, string? description = null) 
+        private Project AddEntity(ProjectEntity entity)
         {
             var context = _txService.CurrentDbContext();
+           
+            context.Projects.Add(entity);
+
+            // Forcing save to update the internal entity Id.
+            context.SaveChanges();
+            
+            return entity.ToProject();
+        }
+        
+        public Try<Project> Create(Guid id, string name, Instant creationDate, string? description = null) 
+        {
             ProjectEntity entity = new()
             {
                 Gid = id,
@@ -36,12 +47,7 @@ namespace Texo.Infrastructure.Db.Dao
                 CreationDate = creationDate.ToDateTimeUtc(),
                 Description = description
             };
-            context.Projects.Add(entity);
-
-            // Forcing save to update the internal entity Id.
-            context.SaveChanges();
-
-            return Try(entity.ToProject());
+            return Try(AddEntity(entity));
         }
 
         public TryOption<Project> FindOne(Guid projectId)
@@ -51,9 +57,18 @@ namespace Texo.Infrastructure.Db.Dao
              null)!;
         }
 
+        private Project UpdateEntity(Project updated)
+        {
+            var entity = _txService.CurrentDbContext().Projects.Single(p => p.Gid.Equals(updated.Id));
+            _txService.CurrentDbContext().Projects.Update(entity);
+            entity.FromProject(updated);
+            _txService.CurrentDbContext().SaveChanges();
+            return entity.ToProject();
+        }
+
         public Try<Project> Update(Project project)
         {
-            throw new NotImplementedException();
+            return Try(UpdateEntity(project));
         }
 
         public void Delete(Guid projectId)

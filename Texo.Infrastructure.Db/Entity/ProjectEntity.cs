@@ -15,20 +15,6 @@ namespace Texo.Infrastructure.Db.Entity
     [Index(nameof(Name), IsUnique = true, Name = "texo_project_idx_name")]
     public class ProjectEntity
     {
- 
-        public static ProjectEntity From(Project project)
-        {
-            return new()
-            {
-                Gid = project.Id,
-                Name = project.Name,
-                CreationDate = project.CreationDate.ToDateTimeUtc(),
-                ModificationDate = project.ModificationDate.Map(d => d.ToDateTimeUtc()).ToNullable(),
-                Description = project.Description.IfNone(() => null!)
-            };
-        }
-
-        
         public long Id { get; set; }
         
         [Required]
@@ -63,6 +49,16 @@ namespace Texo.Infrastructure.Db.Entity
             Option<string> description = Optional(Description);
             
             return new Project(Gid, Name, Instant.FromDateTimeUtc(CheckKind(CreationDate)), modifDate, description);
+        }
+
+        public ProjectEntity FromProject(Project project)
+        {
+            Name = project.Name;
+            ModificationDate = project.ModificationDate.Map(d => d.ToDateTimeUtc()).ToNullable();
+            
+            Description = project.Description.IfNoneUnsafe(() => null!);
+
+            return this;
         }
         
     }
