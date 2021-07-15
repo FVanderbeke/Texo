@@ -51,7 +51,6 @@ namespace Texo.Application.Rest.V1
         public async Task<ProjectDetailDto> Save(string name, string? description = null)
             => _projects.Declare(name, description).Map(ToDetailDto).IfFailThrow();
 
-
         [HttpGet]
         public async Task<IEnumerable<ProjectDto>> FindAll() =>
             _projects.All().Map(list => list.Map(ToDto)).IfFailThrow();
@@ -66,6 +65,20 @@ namespace Texo.Application.Rest.V1
             }
             
             return _projects.One(id).Map(ToDetailDto).Map(Ok).IfFailThrow();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Remove(Guid id)
+        {
+            _projects.Remove(id);
+
+            return Ok();
+        }
+
+        [HttpGet("exists/{name}")]
+        public async Task<bool> Exists(string name)
+        {
+            return _projects.Contains(name);
         }
     }
 }

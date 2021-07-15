@@ -47,11 +47,18 @@ namespace Texo.Domain.Model.Service
 
         public Try<List<Project>> All() => _txManager.Submit(() => _repository.FindAll().Map(projects => projects.ToList()));
 
-        public TryOption<Project> One(Guid id) => _txManager.Submit(() => _repository.FindOne(id));
+        public TryOption<Project> One(Guid projectId) => _txManager.Submit(() => _repository.FindOne(projectId));
+        
+        public TryOption<Project> One(string projectName) => _txManager.Submit(() => _repository.FindByName(projectName));
 
-        public TryOption<Project> One(string name)
+        public void Remove(Guid projectId)
         {
-            throw new NotImplementedException();
+            _txManager.Execute(() => _repository.Delete(projectId));
+        }
+
+        public bool Contains(string name)
+        {
+            return _txManager.Submit(() => _repository.Exists(name));
         }
     }
 }

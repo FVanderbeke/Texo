@@ -49,5 +49,15 @@ namespace Texo.Infrastructure.InMemory.Dao
         {
             return () => _projects.Values.ToList();
         }
+
+        public TryOption<Project> FindByName(string projectName)
+        {
+            return Prelude.TryOption(() => _projects.Values.Single(p => p.Name == projectName));
+        }
+
+        public bool Exists(string name)
+        {
+            return _projects.Values.Any(p => p.Name == name);
+        }
     }
 }

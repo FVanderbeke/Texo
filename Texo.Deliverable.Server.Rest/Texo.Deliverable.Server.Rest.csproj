@@ -1,8 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Texo.Application.Api\Texo.Application.Api.csproj" />
+      <ProjectReference Include="..\Texo.Application.Rest\Texo.Application.Rest.csproj" />
+      <ProjectReference Include="..\Texo.Infrastructure.Db\Texo.Infrastructure.Db.csproj" />
+    </ItemGroup>
 
 </Project>

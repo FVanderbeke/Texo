@@ -13,5 +13,7 @@ namespace Texo.Domain.Model.Repository
         
         void Delete(Guid projectId);
         Try<IEnumerable<Project>> FindAll();
+        TryOption<Project> FindByName(string projectName);
+        bool Exists(string name);
     }
 }

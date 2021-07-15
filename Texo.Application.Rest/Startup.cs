@@ -1,4 +1,5 @@
 using System.Data.Common;
+using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Autofac;
@@ -35,6 +36,8 @@ namespace Texo.Application.Rest
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc().AddApplicationPart(Assembly.Load("Texo.Application.Rest")).AddControllersAsServices();
+            
             services.AddControllers().AddJsonOptions(options =>
             {               
                 options.JsonSerializerOptions.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
@@ -59,11 +62,10 @@ namespace Texo.Application.Rest
         
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            // Here you register your dependencies
             // Instantiating the database connection (mandatory for SQLite).
             var connection = new SqliteConnection(@"Data Source=:memory:");
             connection.Open();
-            
+
             // Declaring the logger
             var logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
 

@@ -10,7 +10,6 @@ using Texo.Domain.Model.Factory;
 using Texo.Domain.Model.Repository;
 using Texo.Infrastructure.Db.Entity;
 using Texo.Infrastructure.Db.Service;
-
 using static LanguageExt.Prelude;
 
 namespace Texo.Infrastructure.Db.Dao
@@ -29,16 +28,16 @@ namespace Texo.Infrastructure.Db.Dao
         private Project AddEntity(ProjectEntity entity)
         {
             var context = _txService.CurrentDbContext();
-           
+
             context.Projects.Add(entity);
 
             // Forcing save to update the internal entity Id.
             context.SaveChanges();
-            
+
             return entity.ToProject();
         }
-        
-        public Try<Project> Create(Guid id, string name, Instant creationDate, string? description = null) 
+
+        public Try<Project> Create(Guid id, string name, Instant creationDate, string? description = null)
         {
             ProjectEntity entity = new()
             {
@@ -73,12 +72,27 @@ namespace Texo.Infrastructure.Db.Dao
 
         public void Delete(Guid projectId)
         {
-            throw new NotImplementedException();
+            var entity = _txService.CurrentDbContext().Projects.Single(p => p.Gid.Equals(projectId));
+            _txService.CurrentDbContext().Projects.Remove(entity);
+            _txService.CurrentDbContext().SaveChanges();
         }
 
         public Try<IEnumerable<Project>> FindAll()
         {
-            return Try<IEnumerable<Project>>((from p in _txService.CurrentDbContext().Projects select p.ToProject()).ToList());
+            return Try<IEnumerable<Project>>((from p in _txService.CurrentDbContext().Projects select p.ToProject())
+                .ToList());
+        }
+
+        public TryOption<Project> FindByName(string projectName)
+        {
+            return TryOption
+            (_txService.CurrentDbContext().Projects.SingleOrDefault(p => p.Name == projectName)?.ToProject() ??
+             null)!;
+        }
+
+        public bool Exists(string name)
+        {
+            return _txService.CurrentDbContext().Projects.Any(p => p.Name == name);
         }
     }
 }

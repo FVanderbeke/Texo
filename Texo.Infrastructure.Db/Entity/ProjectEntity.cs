@@ -39,6 +39,10 @@ namespace Texo.Infrastructure.Db.Entity
             {
                 return DateTime.SpecifyKind(dateTime, DateTimeKind.Local).ToUniversalTime();
             }
+            else if (dateTime.Kind == DateTimeKind.Local)
+            {
+                return dateTime.ToUniversalTime();
+            }
 
             return dateTime;
         }
